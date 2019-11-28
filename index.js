@@ -4,6 +4,8 @@ let app = express();
 let fs = require("fs");
 let sharp = require("sharp");
 
+let fileNumber = 0;
+
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(express.static(__dirname + '/app'));
@@ -11,6 +13,14 @@ app.use(express.static(__dirname + '/app'));
 let server = http.createServer(app);
 server.listen(8080, () => {
 	console.log("Server listening on Port 8080");
+	fs.readdir(__dirname + '/images', function(err, files){
+		if(err){
+			return console.log("Konnte kein images Verzeichnis finden.");
+		}
+		files.forEach(function(file){
+			fileNumber++;
+		});
+	});
 });
 
 app.get('/id/:id', function(req, res){
@@ -31,7 +41,7 @@ app.get('/id/:id', function(req, res){
 });
 
 app.get('/random', function(req, res){
-	let index = Math.floor(Math.random() * Math.floor(992));
+	let index = Math.floor(Math.random() * Math.floor(fileNumber));
 	res.contentType("image/jpeg");
 	let rs = fs.createReadStream(__dirname + '/images/' + index + '.jpg');
 	rs.on('open', function(){
@@ -73,7 +83,7 @@ app.get('/id/:id/:size', function(req, res){
 });
 
 app.get('/random/:size', function(req, res){
-	let index = Math.floor(Math.random() * Math.floor(992));
+	let index = Math.floor(Math.random() * Math.floor(fileNumber));
 	try {
 		res.contentType("image/jpeg");
 		let image = sharp(__dirname + '/images/' + index + '.jpg');
@@ -133,7 +143,7 @@ app.get('/id/:id/:sizex/:sizey', function(req, res){
 });
 
 app.get('/random/:sizex/:sizey', function(req, res){
-	let index = Math.floor(Math.random() * Math.floor(992));
+	let index = Math.floor(Math.random() * Math.floor(fileNumber));
 	try {
 		res.contentType("image/jpeg");
 		let image = sharp(__dirname + '/images/' + index + '.jpg');
