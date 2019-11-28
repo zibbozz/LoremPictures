@@ -25,6 +25,7 @@ server.listen(8080, () => {
 
 app.get('/id/:id', function(req, res){
 	try {
+		console.log(req.connection.remoteAddress + " requested image with id " + req.params.id);
 		res.contentType("image/jpeg");
 		let rs = fs.createReadStream(__dirname + '/images/' + req.params.id + '.jpg');
 		rs.on('open', function(){
@@ -42,6 +43,7 @@ app.get('/id/:id', function(req, res){
 
 app.get('/random', function(req, res){
 	let index = Math.floor(Math.random() * Math.floor(fileNumber));
+	console.log(req.connection.remoteAddress + " requested image with id " + index);
 	res.contentType("image/jpeg");
 	let rs = fs.createReadStream(__dirname + '/images/' + index + '.jpg');
 	rs.on('open', function(){
@@ -55,6 +57,7 @@ app.get('/random', function(req, res){
 
 app.get('/id/:id/:size', function(req, res){
 	try {
+		console.log(req.connection.remoteAddress + " requested image with id " + req.params.id);
 		res.contentType("image/jpeg");
 		let image = sharp(__dirname + '/images/' + req.params.id + '.jpg');
 		image.resize(parseInt(req.params.size), parseInt(req.params.size));
@@ -84,6 +87,7 @@ app.get('/id/:id/:size', function(req, res){
 
 app.get('/random/:size', function(req, res){
 	let index = Math.floor(Math.random() * Math.floor(fileNumber));
+	console.log(req.connection.remoteAddress + " requested image with id " + index);
 	try {
 		res.contentType("image/jpeg");
 		let image = sharp(__dirname + '/images/' + index + '.jpg');
@@ -114,6 +118,7 @@ app.get('/random/:size', function(req, res){
 
 app.get('/id/:id/:sizex/:sizey', function(req, res){
 	try {
+		console.log(req.connection.remoteAddress + " requested image with id " + req.params.id);
 		res.contentType("image/jpeg");
 		let image = sharp(__dirname + '/images/' + req.params.id + '.jpg');
 		image.resize(parseInt(req.params.sizex), parseInt(req.params.sizey));
@@ -144,6 +149,7 @@ app.get('/id/:id/:sizex/:sizey', function(req, res){
 
 app.get('/random/:sizex/:sizey', function(req, res){
 	let index = Math.floor(Math.random() * Math.floor(fileNumber));
+	console.log(req.connection.remoteAddress + " requested image with id " + index);
 	try {
 		res.contentType("image/jpeg");
 		let image = sharp(__dirname + '/images/' + index + '.jpg');
